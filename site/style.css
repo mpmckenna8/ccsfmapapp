@@ -1,5 +1,15 @@
 
 
-#map { position:absolute;
+#map { position:fixed;
   margin-top:10%;
-  top:0; bottom:0; width:100%; }
+  margin-left:15%;
+  top:0; bottom:0; width:100%;
+}
+
+.label {
+  color: blue;
+}
+
+#sider {
+  width: 20%;
+}

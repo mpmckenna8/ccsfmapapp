@@ -16,6 +16,8 @@ Technology used:
 - HTML, CSS, JavaScript
 - Bower, to install and manage the web stuff
 - Leaflet.js to show a map
+- Jquery-ui and jquery to mess around with the DOM and make simple nice looking
+  things
 - Other stuff depending on what is wanted
 
 To Do's,
@@ -23,4 +25,7 @@ To Do's,
   supplemental datasets for which the data doesn't really make sense to add to
   OSM.
 - Create a initial launch page similar to bootmap but built from scratch
+- Fill in each campus dropdown with relevant info, such as buildings for each
+  campus
+- Create a data set of offices or other imporant campus features
 
