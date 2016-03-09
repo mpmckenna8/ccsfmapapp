@@ -94,8 +94,7 @@ var view = {
       var blay = L.geoJson( buildgeo, {
         onEachFeature:function(feature, layer){
         //  console.log(feature.properties.class)
-          console.log(layer)
-
+        //  console.log(layer)
           var popcon = feature.properties.name
 
           var htpop = "<h3>" + popcon + "<h3>" + "<p>" + "need to add notes field in each building"+ "</p> <h5>Campus</h5> <p>" + campus + "</p>";
@@ -104,10 +103,10 @@ var view = {
 
         },
         style:function(feat){
-          console.log(campus)
+        //  console.log(campus)
           return {
-            fill:"red",
-            className:campus.split(' ')[0],
+            color:"red",
+            className:"buildo " + campus.split(' ')[0],
 
           }
         },
@@ -125,17 +124,12 @@ var view = {
         var buildcoors = buildgeo.features[i].geometry.coordinates;
       //  console.log(buildcoors)
         buildlist = buildlist + "<li onclick='view.gotofeat(" + buildcoors[0] + ", " +  buildcoors[1] + ")'>" + buildgeo.features[i].properties.name + "</li>";
-
       }
-
       buildlist += "</ul>";
 
       oncampus.append(buildlist)
 
-      //$('.buildList').accordion({collapsible:true, active:false})
-
   //  campuses.append('bleep')
-
       blay.addTo(map);
 
 
@@ -155,7 +149,78 @@ var view = {
 
 
 
+  },
+  addToSide: function(feat){
+
+    console.log('add feat to', feat);
+    var camli= document.getElementById('campList');
+    for(i in feat.features){
+   //console.log(camli.innerHTML);
+  // console.log(feat.features[i])
+    camli.innerHTML += '<h5 class="campo" data="'+ feat.features[i].properties.campusname + '"><span class="campis">' +
+    feat.features[i].properties.campusname + '</h5> <div> <h7 class="buildList">Buildings</h7> <div class="buildname '+ feat.features[i].properties.campusname.split(' ')[0] +'"></div></div></span>';
   }
 
+  $('#campList').accordion({collapsible:true, active:false})
 
+  $('.campo').click(function(d){
+
+    console.log('lci calied on', (d.currentTarget.attributes.data.value))
+
+    var dunnoca = d.currentTarget.attributes.data.value;
+    console.log((typeof(dunnoca)));
+    view.gocamp(dunnoca);
+  })
+},
+
+
+  addcamps: function(dat){
+    console.log(this)
+    console.log(dat)
+    console.log(campReq.status);
+
+    if(campReq.status === 200  && campReq.readyState === 4){
+
+    //  console.log(typeof(JSON.parse(campReq.responseText)))
+      console.log('worked')
+      campGeojson = JSON.parse(campReq.responseText);
+      view.addToSide(campGeojson);
+
+
+    var featureLayer = layersHelp.campusLayer.addData(campGeojson)
+
+
+    .addTo(map);
+
+    console.log(featureLayer)
+  //  $('#campList').accordion({collapsible:true})
+
+
+}},
+
+ gocamp: function (feat){
+var cakey = feat;
+  console.log((cakey))
+
+  for(i in campGeojson.features){
+    if(campGeojson.features[i].properties.campusname == cakey){
+
+    //  console.log('right feat, ', campGeojson.features[i].geometry)
+      var geco = [campGeojson.features[i].geometry.coordinates[1], campGeojson.features[i].geometry.coordinates[0]];
+      map.setView(geco, 18)
+    }
+    }
+
+  }
+}
+
+
+/// Bad global things I was too lazy to deal with
+
+function sizeLayerControl() {
+  $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
+}
+
+function clearHighlight() {
+  highlight.clearLayers();
 }
