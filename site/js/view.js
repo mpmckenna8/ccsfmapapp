@@ -161,7 +161,7 @@ var view = {
     feat.features[i].properties.campusname + '</h5> <div> <h7 class="buildList">Buildings</h7> <div class="buildname '+ feat.features[i].properties.campusname.split(' ')[0] +'"></div></div></span>';
   }
 
-  $('#campList').accordion({collapsible:true, active:false})
+  $('#campList').accordion({collapsible:true, active:false, heightStyle: "content"})
 
   $('.campo').click(function(d){
 
