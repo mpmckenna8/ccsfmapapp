@@ -1,78 +1,22 @@
 window.onload = (function(){
 
-  var workspace; // this variable is going to hold the router.
-  $(window).resize(function() {
-    sizeLayerControl();
-  });
+  view.setUpBaseMapController();
 
-  $(document).on("click", ".feature-row", function(e) {
-    $(document).off("mouseout", ".feature-row", clearHighlight);
-    sidebarClick(parseInt($(this).attr("id"), 10));
-  });
+  view.addBuilds("North Beach", '../shapes/nbChinaTownBuildings.geojson')
+  view.addBuilds("Airport", '../shapes/airport.geojson');
 
-  $(document).on("mouseover", ".feature-row", function(e) {
-    highlight.clearLayers().addLayer(L.circleMarker([$(this).attr("lat"), $(this).attr("lng")], highlightStyle));
-  });
+  view.addBuilds("Fort Mason", '../shapes/fortMason.geojson');
 
-  $(document).on("mouseout", ".feature-row", clearHighlight);
-
-  $("#about-btn").click(function() {
-    $("#aboutModal").modal("show");
-    $(".navbar-collapse.in").collapse("hide");
-    return false;
-  });
-
-  $("#full-extent-btn").click(function() {
-    map.fitBounds(campusLayer.getBounds());
-    $(".navbar-collapse.in").collapse("hide");
-    return false;
-  });
-
-  $("#legend-btn").click(function() {
-    $("#legendModal").modal("show");
-    $(".navbar-collapse.in").collapse("hide");
-    return false;
-  });
-
-  $("#login-btn").click(function() {
-    $("#loginModal").modal("show");
-    $(".navbar-collapse.in").collapse("hide");
-    return false;
-  });
-
-  $("#list-btn").click(function() {
-    $('#sidebar').toggle();
-    map.invalidateSize();
-    return false;
-  });
-
-  $("#nav-btn").click(function() {
-    $(".navbar-collapse").collapse("toggle");
-    return false;
-  });
-
-  $("#sidebar-toggle-btn").click(function() {
-    $("#sidebar").toggle();
-    map.invalidateSize();
-    return false;
-  });
-
-  $("#sidebar-hide-btn").click(function() {
-    $('#sidebar').hide();
-    map.invalidateSize();
-  });
-
-  map.addControl(L.mapbox.infoControl().addInfo('foo'));
-
-  map.addControl(L.mapbox.legendControl());
+  view.setUpTop();
 
 })
 
 
 
 L.mapbox.accessToken = 'pk.eyJ1IjoibXBtY2tlbm5hOCIsImEiOiJfYWx3RlJZIn0.v-vrWv_t1ytntvWpeePhgQ';
-var map = L.mapbox.map('map', 'mapbox.streets')
+var map = L.mapbox.map('map', null)
   .setView([37.77, -122.42], 12);
+
 
 
 var campGeojson;
@@ -147,6 +91,10 @@ function addcamps(dat){
 }
 }
 
+
+
+
+
 function addToSide(feat){
   console.log('add feat to', feat);
   var camli= document.getElementById('campList');
@@ -170,6 +118,8 @@ $('.campo').click(function(d){
 }
 
 
+
+
 function gocamp(feat){
 var cakey = feat;
   console.log((cakey))
@@ -185,94 +135,9 @@ var cakey = feat;
 
 
 
-// document.getElementsByClassName('camp' + feat.properties.id)[0].addEventListener('click', blop);
-//  var camgo = document.getElementsByClassName('camp' + feat.properties.id)[0].addEventListener('click', blop);
-  //console.log('need to go to the campus', this);
-//  console.log(camgo, 'go go')
-
 }
-
-addBuilds("Airport", '../shapes/airport.geojson')
-
-
-addBuilds("Fort Mason", '../shapes/fortMason.geojson')
-
-
-var controller = L.control.layers({
-  "Mapbox Streets":L.mapbox.tileLayer('mapbox.streets').addTo(map),
-    'Mapbox Light': L.mapbox.tileLayer('mapbox.light')
-}, {
-
-}).addTo(map);
-
-
-console.log(controller);
-
-
-function addBuilds(campus, loc){
-  $.get(loc, function(data){
-
-  //  console.log(data)
-  var buildgeo = JSON.parse(data);
-
-// So I guess the way to set a class name on a feature is done as below in the style part of the options.
-    var blay = L.geoJson( buildgeo, {
-      onEachFeature:function(feature, layer){
-      //  console.log(feature.properties.class)
-        console.log(layer)
-
-        var popcon = feature.properties.name
-
-        var htpop = "<h3>" + popcon + "<h3>" + "<p>" + "need to add notes field in each building"+ "</p> <h5>Campus</h5> <p>" + campus + "</p>";
-
-        layer.bindPopup(htpop)
-
-
-      },
-      style:function(feat){
-        console.log(campus)
-        return {
-          fill:"red",
-          className:campus.split(' ')[0],
-
-        }
-      },
-
-    })
-
-    var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
-
-//    console.log(oncampus);
-
-    var buildlist = "<ul>";
-
-    for( i in buildgeo.features){
-//      console.log(buildgeo)
-      var buildcoors = buildgeo.features[i].geometry.coordinates;
-    //  console.log(buildcoors)
-      buildlist = buildlist + "<li onclick='view.gotofeat(" + buildcoors[0] + ", " +  buildcoors[1] + ")'>" + buildgeo.features[i].properties.name + "</li>";
-
-    }
-
-    buildlist += "</ul>";
-
-    oncampus.append(buildlist)
-
-    //$('.buildList').accordion({collapsible:true, active:false})
-
-//  campuses.append('bleep')
-
-    blay.addTo(map);
-
-
-  })
-}
-
-
 
 /*
-
-
 function gotofeat( lat, lon){
   console.log('should go to feat ' + lat + ", " + lon);
   console.log($('.Fort')[1])

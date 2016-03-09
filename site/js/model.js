@@ -1,0 +1,4 @@
+var searches = {
+  campusSearch:[],
+  buildingSearch:[],
+}
