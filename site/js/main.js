@@ -1,17 +1,22 @@
 window.onload = (function(){
 
+
   view.setUpBaseMapController();
 
   view.addBuilds("Ocean Campus", '../shapes/oceanCampusBuilds.geojson')
 
-  view.addBuilds("North Beach", '../shapes/nbChinaTownBuildings.geojson')
+  view.addBuilds("Chinatown / North Beach", '../shapes/nbChinaTownBuildings.geojson')
   view.addBuilds("Airport", '../shapes/airport.geojson');
 
   view.addBuilds("Fort Mason", '../shapes/fortMason.geojson');
 
   view.setUpTop();
 
+
 })
+
+searches.searchInit();
+
 
 L.mapbox.accessToken = 'pk.eyJ1IjoibXBtY2tlbm5hOCIsImEiOiJfYWx3RlJZIn0.v-vrWv_t1ytntvWpeePhgQ';
 

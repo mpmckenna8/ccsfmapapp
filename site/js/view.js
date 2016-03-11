@@ -37,7 +37,7 @@ var view = {
     });
 
     $("#full-extent-btn").click(function() {
-      map.fitBounds(campusLayer.getBounds());
+      map.fitBounds(layersHelp.campusLayer.getBounds());
       $(".navbar-collapse.in").collapse("hide");
       return false;
     });
@@ -77,6 +77,21 @@ var view = {
       $('#sidebar').hide();
       map.invalidateSize();
     });
+
+          /* Highlight search box text on click */
+      $("#searchbox").click(function () {
+        $(this).select();
+      });
+
+
+      /* Prevent hitting enter from refreshing the page */
+      $("#searchbox").keypress(function (e) {
+        console.log(e)
+        if (e.which == 13) {
+          e.preventDefault();
+        }
+      });
+
 
     map.addControl(L.mapbox.infoControl().addInfo('foo'));
 
@@ -152,39 +167,38 @@ var view = {
   },
   addToSide: function(feat){
 
-    console.log('add feat to', feat);
-    var camli= document.getElementById('campList');
-    for(i in feat.features){
-   //console.log(camli.innerHTML);
-  // console.log(feat.features[i])
-    camli.innerHTML += '<h5 class="campo" data="'+ feat.features[i].properties.campusname + '"><span class="campis">' +
-    feat.features[i].properties.campusname + '</h5> <div> <h7 class="buildList">Buildings</h7> <div class="buildname '+ feat.features[i].properties.campusname.split(' ')[0] +'"></div></div></span>';
-  }
+      var camli= document.getElementById('campList');
+      for(i in feat.features){
+        //console.log(camli.innerHTML);
+        camli.innerHTML += '<h5 class="campo" data="'+ feat.features[i].properties.campusname + '"><span class="campis">' +
+        feat.features[i].properties.campusname + '</h5> <div> <h7 class="buildList">Buildings</h7> <div class="buildname '+ feat.features[i].properties.campusname.split(' ')[0] +'"></div></div></span>';
+      }
 
-  $('#campList').accordion({collapsible:true, active:false, heightStyle: "content"})
+      $('#campList').accordion({collapsible:true, active:false, heightStyle: "content"})
 
-  $('.campo').click(function(d){
+      $('.campo').click(function(d){
 
-    console.log('lci calied on', (d.currentTarget.attributes.data.value))
+        console.log('lci calied on', (d.currentTarget.attributes.data.value))
 
-    var dunnoca = d.currentTarget.attributes.data.value;
-    console.log((typeof(dunnoca)));
-    view.gocamp(dunnoca);
-  })
-},
+        var dunnoca = d.currentTarget.attributes.data.value;
+        console.log((typeof(dunnoca)));
+        view.gocamp(dunnoca);
+      })
+  },
 
 
   addcamps: function(dat){
-    console.log(this)
+
     console.log(dat)
     console.log(campReq.status);
 
     if(campReq.status === 200  && campReq.readyState === 4){
 
     //  console.log(typeof(JSON.parse(campReq.responseText)))
-      console.log('worked')
+
       campGeojson = JSON.parse(campReq.responseText);
       view.addToSide(campGeojson);
+      searches.addToSearch(campGeojson);
 
 
     var featureLayer = layersHelp.campusLayer.addData(campGeojson)
@@ -199,22 +213,82 @@ var view = {
 }},
 
  gocamp: function (feat){
-var cakey = feat;
-  console.log((cakey))
+    var cakey = feat;
+      console.log((cakey))
 
-  for(i in campGeojson.features){
-    if(campGeojson.features[i].properties.campusname == cakey){
+      for(i in campGeojson.features){
+        if(campGeojson.features[i].properties.campusname == cakey){
 
-    //  console.log('right feat, ', campGeojson.features[i].geometry)
-      var geco = [campGeojson.features[i].geometry.coordinates[1], campGeojson.features[i].geometry.coordinates[0]];
-      map.setView(geco, 18)
-    }
-    }
+        //  console.log('right feat, ', campGeojson.features[i].geometry)
+          var geco = [campGeojson.features[i].geometry.coordinates[1], campGeojson.features[i].geometry.coordinates[0]];
+          map.setView(geco, 18)
+        }
+      }
 
-  }
+  },
+
+  setupSearch: function(campusBH, geonamesBH){
+
+
+
+      $("#searchbox").typeahead({
+          minLength: 3,
+            highlight: true,
+            hint: false
+          },{
+        name:"CampSearch",
+        displayKey: "name",
+        source: campusBH.ttAdapter(),
+        templates:{
+          header:"<h3 class='typeahead-header'>Campuses</h3>"
+        }
+      },
+      {
+        name: "GeoNames",
+        displayKey: "name",
+        source: geonamesBH.ttAdapter(),
+        templates: {
+          header: "<h4 class='typeahead-header'><img src='assets/img/globe.png' width='25' height='25'>&nbsp;GeoNames</h4>"
+        }
+      }
+    )
+      .on("typeahead:selected", function (obj, datum) {
+        console.log(datum)
+        console.log(obj)
+        var obje = obj;
+        if (datum.source === "GeoNames") {
+            map.setView([datum.lat, datum.lng], 14);
+          }
+
+        if (datum.source === "camps"){
+          map.setView([datum.lat, datum.lng], 17);
+          console.log(map._layers)
+
+        }
+
+        if ($(".navbar-collapse").height() > 50) {
+          $(".navbar-collapse").collapse("hide");
+        }
+      })
+    .on("typeahead:opened", function () {
+      $(".navbar-collapse.in").css("max-height", $(document).height() - $(".navbar-header").height());
+      $(".navbar-collapse.in").css("height", $(document).height() - $(".navbar-header").height());
+    })
+    .on("typeahead:closed", function () {
+      $(".navbar-collapse.in").css("max-height", "");
+      $(".navbar-collapse.in").css("height", "");
+    });
+
+
+    $(".twitter-typeahead").css("position", "static");
+    $(".twitter-typeahead").css("display", "block");
+
+
+
+
+},
+
 }
-
-
 /// Bad global things I was too lazy to deal with
 
 function sizeLayerControl() {
