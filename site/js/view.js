@@ -105,14 +105,26 @@ var view = {
     //  console.log(data)
     var buildgeo = JSON.parse(data);
 
+
+    var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
+
+    var buildlist = "<ul>";
+
+
+
   // So I guess the way to set a class name on a feature is done as below in the style part of the options.
       var blay = L.geoJson( buildgeo, {
         onEachFeature:function(feature, layer){
-        //  console.log(feature.properties.class)
-        //  console.log(layer)
+          console.log(feature.properties)
+         console.log(L.stamp(layer))
+
+
           var popcon = feature.properties.name
 
           var htpop = "<h3>" + popcon + "<h3>" + "<p>" + "need to add notes field in each building"+ "</p> <h5>Campus</h5> <p>" + campus + "</p>";
+
+          buildlist = buildlist + "<a href='./#building/" +  L.stamp(layer) + "'><li id='" + L.stamp(layer) + "' onclick='buildclick(this)' >" + feature.properties.name + "</li>";
+
 
           layer.bindPopup(htpop)
 
@@ -128,18 +140,12 @@ var view = {
 
       })
 
-      var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
+
+
 
   //    console.log(oncampus);
 
-      var buildlist = "<ul>";
 
-      for( i in buildgeo.features){
-  //      console.log(buildgeo)
-        var buildcoors = buildgeo.features[i].geometry.coordinates;
-      //  console.log(buildcoors)
-        buildlist = buildlist + "<li onclick='view.gotofeat(" + buildcoors[0] + ", " +  buildcoors[1] + ")'>" + buildgeo.features[i].properties.name + "</li>";
-      }
       buildlist += "</ul>";
 
       oncampus.append(buildlist)
@@ -168,6 +174,7 @@ var view = {
   addToSide: function(feat){
 
       var camli= document.getElementById('campList');
+
       for(i in feat.features){
         //console.log(camli.innerHTML);
         camli.innerHTML += '<h5 class="campo" data="'+ feat.features[i].properties.campusname + '"><span class="campis">' +
@@ -290,6 +297,17 @@ var view = {
 
 }
 /// Bad global things I was too lazy to deal with
+function buildclick(d){
+  console.log("clikced a building", d)
+  var layId = d.id;
+
+  var onlay = map._layers[layId]
+
+
+  console.log(onlay)
+  onlay.openPopup()
+
+}
 
 function sizeLayerControl() {
   $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);

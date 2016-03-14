@@ -1,3 +1,6 @@
+var workspace; // this variable is going to hold the router.
+
+
 window.onload = (function(){
 
 
