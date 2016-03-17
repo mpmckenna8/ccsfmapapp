@@ -29,3 +29,11 @@ To Do's,
   campus
 - Create a data set of offices or other imporant campus features
 
+
+
+CCSF civic Center campus
+
+Admissions office
+Library lobby
+Bookstore 4th fl
+Student lounge
