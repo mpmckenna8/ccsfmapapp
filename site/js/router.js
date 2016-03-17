@@ -1,14 +1,17 @@
 
+console.log("any router");
+
 
 var Workspace = Backbone.Router.extend({
 
   routes: {
-    "buildings:query":      "building",    // #help
+    "building/:query":      "building",    // #help
     "search/:query":        "search",  // #search/kiwis
-    "search/:query/p:page": "search"   // #search/kiwis/p7
+    "search/:query/p:page": "search" ,  // #search/kiwis/p7
+
   },
 
-  building: function() {
+  building: function(build) {
     console.log('bin building route')
   },
 
@@ -19,4 +22,16 @@ var Workspace = Backbone.Router.extend({
 });
 
 
+startRouter();
+
+
+function startRouter(){
+
+var route = new Workspace();
+
+route.navigate('blah')
 Backbone.history.start();
+
+
+
+}
