@@ -15,7 +15,6 @@ window.onload = (function(){
 
   view.setUpTop();
 
-
 })
 
 searches.searchInit();
