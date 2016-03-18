@@ -19,6 +19,9 @@ Technology used:
 - Jquery-ui and jquery to mess around with the DOM and make simple nice looking
   things
 - Other stuff depending on what is wanted
+  Most of the data is based off of data in OpenStreetMap with some supplemental files in the shapes folder.
+
+  
 
 To Do's,
 - Document workflow, how to requisite data out of OSM and into project or create
@@ -29,3 +32,11 @@ To Do's,
   campus
 - Create a data set of offices or other imporant campus features
 
+
+
+CCSF civic Center campus
+
+Admissions office
+Library lobby
+Bookstore 4th fl
+Student lounge
