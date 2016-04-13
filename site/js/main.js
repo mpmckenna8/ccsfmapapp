@@ -8,10 +8,24 @@ window.onload = (function(){
 
   view.addBuilds("Ocean Campus", '../shapes/oceanCampusBuilds.geojson')
 
+  view.addBuilds('Evans Campus', '../shapes/evansbuilds.geojson')
+
   view.addBuilds("Chinatown / North Beach", '../shapes/nbChinaTownBuildings.geojson')
   view.addBuilds("Airport", '../shapes/airport.geojson');
 
   view.addBuilds("Fort Mason", '../shapes/fortMason.geojson');
+
+  view.addBuilds("Civic Center", "../shapes/civicBuild.geojson");
+
+  view.addBuilds("Downtown Center", "../shapes/downtownBuild.geojson");
+
+  view.addBuilds("Southeast Center", "../shapes/southEastBuild.geojson");
+
+
+  view.addBuilds("Gough Street", "../shapes/goughbuild.geojson");
+  view.addBuilds("John Adams", "../shapes/johnAdamsBuilds.geojson")
+
+
 
   view.setUpTop();
 

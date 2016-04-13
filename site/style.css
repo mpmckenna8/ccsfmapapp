@@ -9,7 +9,7 @@
 html, body, #container {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow: scroll;
 }
 body {
   padding-top: 50px;
@@ -25,7 +25,7 @@ input[type="radio"], input[type="checkbox"] {
 }
 #sidebar {
   width: 250px;
-  height: 1000px;
+  height: 100%;
   max-width: 100%;
   float: left;
   -webkit-transition: all 0.25s ease-out;
