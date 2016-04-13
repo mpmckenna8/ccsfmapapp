@@ -26,10 +26,12 @@ window.onload = (function(){
   view.addBuilds("John Adams", "../shapes/johnAdamsBuilds.geojson")
 
 
-
   view.setUpTop();
 
+
+
 })
+
 
 searches.searchInit();
 
@@ -41,9 +43,6 @@ var map = L.mapbox.map('map', null)
 
 
 var campGeojson;
-var campReq  = new XMLHttpRequest();
+var campReq  = $.get('../shapes/campPoints.geojson', view.addcamps);
 
 campReq.onreadystatechange = view.addcamps;
-
-campReq.open('GET', '../shapes/campPoints.geojson');
-campReq.send();
