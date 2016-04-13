@@ -1,6 +1,4 @@
 
-<<<<<<< HEAD
-=======
 console.log("any router");
 
 
@@ -37,4 +35,3 @@ Backbone.history.start();
 
 
 }
->>>>>>> gh-pages

@@ -100,24 +100,20 @@ var view = {
   },
 
    addBuilds: function(campus, loc){
-    $.get(loc, function(data){
 
+
+    $.get(loc, function(data){
     //  console.log(data)
     var buildgeo = JSON.parse(data);
-
-
     var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
 
+    console.log('oncampus', oncampus)
     var buildlist = "<ul>";
 
-
-
   // So I guess the way to set a class name on a feature is done as below in the style part of the options.
+
       var blay = L.geoJson( buildgeo, {
         onEachFeature:function(feature, layer){
-          console.log(feature.properties)
-         console.log(L.stamp(layer))
-
 
           var popcon = feature.properties.name
 
@@ -139,8 +135,6 @@ var view = {
         },
 
       })
-
-
 
 
   //    console.log(oncampus);

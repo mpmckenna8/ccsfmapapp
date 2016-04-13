@@ -4,8 +4,6 @@
 
 "features": [
 { "type": "Feature", "properties": { "id": 1, "campusname": "Ocean" }, "geometry": { "type": "Point", "coordinates": [ -122.449866387929717, 37.72525388214661 ] } },
-
-{ "type": "Feature", "properties": { "id": 12, "campusname": "Gough Street" }, "geometry": { "type": "Point", "coordinates": [ -122.421291558690612, 37.772177562976438 ] } },
 { "type": "Feature", "properties": { "id": 10, "campusname": "Airport" }, "geometry": { "type": "Point", "coordinates": [ -122.384085264955345, 37.636127317425647 ] } },
 { "type": "Feature", "properties": { "id": 4, "campusname": "Chinatown \/ North Beach Center" }, "geometry": { "type": "Point", "coordinates": [ -122.404763436778055, 37.795531136937008 ] } },
 { "type": "Feature", "properties": { "id": 3, "campusname": "Civic Center" }, "geometry": { "type": "Point", "coordinates": [ -122.414209811090117, 37.779464586418271 ] } },
@@ -14,6 +12,7 @@
 { "type": "Feature", "properties": { "id": 7, "campusname": "Fort Mason" }, "geometry": { "type": "Point", "coordinates": [ -122.431758973693391, 37.806822044116515 ] } },
 { "type": "Feature", "properties": { "id": 9, "campusname": "John Adams Center" }, "geometry": { "type": "Point", "coordinates": [ -122.447276114787982, 37.77413050286566 ] } },
 { "type": "Feature", "properties": { "id": 2, "campusname": "Mission Center" }, "geometry": { "type": "Point", "coordinates": [ -122.420609395329336, 37.754855575963504 ] } },
-{ "type": "Feature", "properties": { "id": 11, "campusname": "Southeast Center" }, "geometry": { "type": "Point", "coordinates": [ -122.394105998598434, 37.737297558646205 ] } }
+{ "type": "Feature", "properties": { "id": 11, "campusname": "Southeast Center" }, "geometry": { "type": "Point", "coordinates": [ -122.394105998598434, 37.737297558646205 ] } },
+{ "type": "Feature", "properties": { "id": 12, "campusname": "Gough Street" }, "geometry": { "type": "Point", "coordinates": [ -122.421291558690612, 37.772177562976438 ] } }
 ]
 }
