@@ -107,8 +107,12 @@ var view = {
       console.log(typeof(data))
 
 
-    var buildgeo = JSON.parse(data) || {};
 
+    var buildgeo = data;
+    if(typeof(buildgeo) === 'string'){
+
+      buildgeo = JSON.parse(data);
+    }
 
     var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
 
