@@ -103,8 +103,13 @@ var view = {
 
 
     $.get(loc, function(data){
-    //  console.log(data)
-    var buildgeo = JSON.parse(data);
+      console.log(data)
+      console.log(typeof(data))
+
+
+    var buildgeo = JSON.parse(data) || {};
+
+
     var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
 
     console.log('oncampus', oncampus)
@@ -190,8 +195,6 @@ var view = {
 
   addcamps: function(dat){
 
-    console.log(dat)
-    console.log(campReq.status);
 
     if(campReq.status === 200  && campReq.readyState === 4){
 
