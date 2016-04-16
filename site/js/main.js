@@ -23,7 +23,8 @@ window.onload = (function(){
 
 
   view.addBuilds("Gough Street", "../shapes/goughbuild.geojson");
-  view.addBuilds("John Adams", "../shapes/johnAdamsBuilds.geojson")
+  view.addBuilds("John Adams", "../shapes/johnAdamsBuilds.geojson");
+  view.addBuilds("Mission Campus", "../shapes/missionBuilds.geojson")
 
 
   view.setUpTop();

@@ -126,7 +126,7 @@ var view = {
 
           var popcon = feature.properties.name
 
-          var htpop = "<h3>" + popcon + "<h3>" + "<p>" + "need to add notes field in each building"+ "</p> <h5>Campus</h5> <p>" + campus + "</p>";
+          var htpop = "<h3>" + popcon + "<h3>" + "<p>" + ( feature.properties.description || "need to add notes field in each building") + "</p> <h5>Campus</h5> <p>" + campus + "</p>";
 
           buildlist = buildlist + "<a href='./#building/" +  L.stamp(layer) + "'><li id='" + L.stamp(layer) + "' onclick='buildclick(this)' >" + feature.properties.name + "</li>";
 
@@ -137,7 +137,7 @@ var view = {
         style:function(feat){
         //  console.log(campus)
           return {
-            color:"red",
+            color:"#FFD700",
             className:"buildo " + campus.split(' ')[0],
 
           }

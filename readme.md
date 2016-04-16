@@ -21,18 +21,16 @@ Technology used:
 - Other stuff depending on what is wanted
   Most of the data is based off of data in OpenStreetMap with some supplemental files in the shapes folder.
 
-  San Francisco urban extract from mapzen of OSM data from https://mapzen.com/data/metro-extracts/
+
 
 To Do's,
 - Document workflow, how to requisite data out of OSM and into project or create
   supplemental datasets for which the data doesn't really make sense to add to
   OSM.
-- Create a initial launch page similar to bootleaf but built from scratch
+- Create a initial launch page similar to bootmap but built from scratch
 - Fill in each campus dropdown with relevant info, such as buildings for each
   campus
 - Create a data set of offices or other important campus features
-  Figure out what attributes I want and if I want to use geojsonpairdown for a buildings datasets
-
 
 
 
@@ -44,6 +42,12 @@ Bookstore 4th fl
 Student lounge
 
 
-CCSF SouthEast Center
-  Library on top floor
-  SFPUC owns building, many offices work out of it
+CCSF downtown campus
+ Library second floor
+ admission office security ground fl
+ bookstore on groundfloor,
+ 8th floor lounge
+ Bathrooms up floor
+ Restaurant in entrance
+
+ 
