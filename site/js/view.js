@@ -103,20 +103,21 @@ var view = {
 
 
     $.get(loc, function(data){
-      console.log(data)
-      console.log(typeof(data))
+//      console.log(typeof(data))
 
 
 
     var buildgeo = data;
-    if(typeof(buildgeo) === 'string'){
 
+    // for some reason when not running locally jquery automatically converts to json
+    // so this if fixes is
+    if(typeof(buildgeo) === 'string'){
       buildgeo = JSON.parse(data);
     }
 
     var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
 
-    console.log('oncampus', oncampus)
+//    console.log('oncampus', oncampus)
     var buildlist = "<ul>";
 
   // So I guess the way to set a class name on a feature is done as below in the style part of the options.
@@ -202,7 +203,6 @@ var view = {
 
     if(campReq.status === 200  && campReq.readyState === 4){
 
-    //  console.log(typeof(JSON.parse(campReq.responseText)))
 
       campGeojson = JSON.parse(campReq.responseText);
       view.addToSide(campGeojson);
@@ -213,9 +213,6 @@ var view = {
 
 
     .addTo(map);
-
-    console.log(featureLayer)
-  //  $('#campList').accordion({collapsible:true})
 
 
 }},
@@ -236,8 +233,6 @@ var view = {
   },
 
   setupSearch: function(campusBH, geonamesBH){
-
-
 
       $("#searchbox").typeahead({
           minLength: 3,
@@ -268,7 +263,7 @@ var view = {
             map.setView([datum.lat, datum.lng], 14);
           }
 
-        if (datum.source === "camps"){
+        else if (datum.source === "camps"){
           map.setView([datum.lat, datum.lng], 17);
           console.log(map._layers)
 

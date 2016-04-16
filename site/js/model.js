@@ -108,7 +108,8 @@ var layersHelp = {
         icon: L.divIcon({
          className: 'label',
          html: feature.properties.campusname,
-         iconSize: [100, 40]
+         iconSize: [100, 40],
+         clickable:false
      })
   });
     //  return L.circleMarker(latlon, {radius: 6});;

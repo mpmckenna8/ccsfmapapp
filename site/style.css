@@ -2,6 +2,7 @@
 
 .label {
   color: blue;
+  pointer-events: none;
 }
 
 
