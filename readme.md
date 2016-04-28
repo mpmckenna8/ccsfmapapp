@@ -50,4 +50,30 @@ CCSF downtown campus
  Bathrooms up floor
  Restaurant in entrance
 
- 
+Evans Campus
+  Lots of shop and heavy machinery.
+
+  Issues of students showing up and not knowing where to go
+
+John Adams
+  Forth fl not accessible by elevator
+  Gym done but over health services
+
+  annex is not compliant so there's no student services in there
+
+
+Mission Campus
+  library, and
+
+Southeast Center
+  shares dean with Evans and they are not a campus but a Center
+
+
+Try and figure out site vs center
+
+
+
+
+
+CCSF Facilities planning info session
+  - Ask highly paid consultants for information

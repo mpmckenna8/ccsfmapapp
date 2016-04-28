@@ -6,7 +6,7 @@ window.onload = (function(){
 
   view.setUpBaseMapController();
 
-  view.addBuilds("Ocean Campus", '../shapes/oceanCampusBuilds.geojson')
+  view.addBuilds("Ocean Campus", '../shapes/oceanBuilds.geojson')
 
   view.addBuilds('Evans Campus', '../shapes/evansbuilds.geojson')
 
