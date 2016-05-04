@@ -226,7 +226,7 @@ var view = {
 
         //  console.log('right feat, ', campGeojson.features[i].geometry)
           var geco = [campGeojson.features[i].geometry.coordinates[1], campGeojson.features[i].geometry.coordinates[0]];
-          map.setView(geco, 18)
+          map.setView(geco, 16)
         }
       }
 
