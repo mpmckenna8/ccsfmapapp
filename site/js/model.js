@@ -14,14 +14,14 @@ var searches = {
   addToSearch(layer){
 
     for( i in layer.features){
-      console.log(layer.features[i])
+    //  console.log(layer.features[i])
       var feature = layer.features[i];
       if(feature = layer.features[i]){
       this.campusSearch.push(
         {
           name: feature.properties.campusname,
           source:"camps",
-          id: L.stamp(layer),
+          id: layer + i,
           lat: feature.geometry.coordinates[1],
           lng: feature.geometry.coordinates[0]
 
@@ -36,8 +36,8 @@ var searches = {
     var campsBH = new Bloodhound({
     name:"CampSearch",
     datumTokenizer: function (d){
-console.log('tockan')
-      console.log(d);
+      //console.log('tockan')
+      //console.log(d);
       return Bloodhound.tokenizers.whitespace(d.name)
     },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -98,22 +98,5 @@ console.log('tockan')
 var layersHelp = {
 
 
-  campusLayer: L.geoJson(null, {
-
-    pointToLayer:function(feature,latlon){
-    //  console.log(latlon);
-    //  console.log(feature.properties.campusname);
-      var campname = feature.properties.campusname;
-      return L.marker(latlon, {
-        icon: L.divIcon({
-         className: 'label',
-         html: feature.properties.campusname,
-         iconSize: [100, 40],
-         clickable:false
-     })
-  });
-    //  return L.circleMarker(latlon, {radius: 6});;
-    }
-  })
 
 }

@@ -3,7 +3,7 @@ console.log("any router");
 
 
 var Workspace = Backbone.Router.extend({
-
+/*
   routes: {
     "building/:query":      "building",    // #help
     "search/:query":        "search",  // #search/kiwis
@@ -31,7 +31,7 @@ var route = new Workspace();
 
 route.navigate('blah')
 Backbone.history.start();
+*/
 
 
-
-}
+})

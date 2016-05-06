@@ -93,19 +93,18 @@ var view = {
       });
 
 
-    map.addControl(L.mapbox.infoControl().addInfo('foo'));
 
-    map.addControl(L.mapbox.legendControl());
 
   },
 
-   addBuilds: function(campus, loc){
+
+
+
+  addBuilds: function(campus, loc){
 
 
     $.get(loc, function(data){
 //      console.log(typeof(data))
-
-
 
     var buildgeo = data;
 
@@ -122,7 +121,9 @@ var view = {
 
   // So I guess the way to set a class name on a feature is done as below in the style part of the options.
 
-      var blay = L.geoJson( buildgeo, {
+
+
+        /* {
         onEachFeature:function(feature, layer){
 
           var popcon = feature.properties.name
@@ -146,23 +147,52 @@ var view = {
 
       })
 
+      */
+
 
   //    console.log(oncampus);
 
-
       buildlist += "</ul>";
 
-      oncampus.append(buildlist)
+      oncampus.append(buildlist);
+      var datStr = campus.split(' ')[0];
+      console.log('source id' + datStr+ 'ble');
+      var count = 0;
+
+
+
+
+        map.addSource(datStr, {
+                'type':'geojson',
+                'data':buildgeo
+          });
+
+        console.log('buildings trying to add ')
+
+        map.addLayer({
+            'id': datStr,
+            'type': 'fill',
+            'source': datStr,
+            'paint': {
+            "fill-outline-color": "white",
+            //  "line-width": 1,
+            'fill-color': '#FF0000',
+            },
+            'layout':{
+            },
+            'interactive':true
+
+          })
+
 
   //  campuses.append('bleep')
-      blay.addTo(map);
-
+    //  map.addSource(campus, blay)
 
     })
   },
   setUpBaseMapController: function(){
-
-
+    console.log('need to set up switching basemaps')
+    /*
     var controller = L.control.layers({
         "CCSF Red":L.mapbox.tileLayer('mpmckenna8.e19b256b').addTo(map),
         "Mapbox Satellite": L.mapbox.tileLayer('mapbox.satellite'),
@@ -172,7 +202,7 @@ var view = {
 
     }).addTo(map);
 
-
+    */
 
   },
   addToSide: function(feat){
@@ -194,8 +224,11 @@ var view = {
         var dunnoca = d.currentTarget.attributes.data.value;
         console.log((typeof(dunnoca)));
         view.gocamp(dunnoca);
+
       })
   },
+
+
 
 
   addcamps: function(dat){
@@ -207,12 +240,47 @@ var view = {
       campGeojson = JSON.parse(campReq.responseText);
       view.addToSide(campGeojson);
       searches.addToSearch(campGeojson);
+      console.log(campGeojson)
+
+// locally http://localhost:8080/shapes/campPoints.geojson
 
 
-    var featureLayer = layersHelp.campusLayer.addData(campGeojson)
+
+  //  var campPointLay = new mapboxgl.GeoJSONSource(    {data:campReq.responseText}  )
+
+  map.on('style.load', function(){
 
 
-    .addTo(map);
+          map.addSource('campuses', {
+            'type':'geojson',
+            'data':campGeojson
+          });
+
+
+
+      console.log('should add cmpus labels')
+      map.addLayer({
+          'id': 'campusPois',
+          'type': 'symbol',
+          'source': 'campuses',
+          'layout':{
+            'text-field':'{campusname}',
+            'text-allow-overlap': true,
+            "text-size": 15
+
+          },
+          'paint':{
+            'text-color': 'pink',
+
+          },
+          'interactive':false,
+        })
+
+  })
+
+
+
+
 
 
 }},
@@ -226,7 +294,12 @@ var view = {
 
         //  console.log('right feat, ', campGeojson.features[i].geometry)
           var geco = [campGeojson.features[i].geometry.coordinates[1], campGeojson.features[i].geometry.coordinates[0]];
-          map.setView(geco, 16)
+    //      map.setView(geco, 16)
+        console.log('should fly to ', geco)
+          map.flyTo({center:campGeojson.features[i].geometry.coordinates,
+            zoom: 26}
+          )
+
         }
       }
 
@@ -285,7 +358,6 @@ var view = {
 
     $(".twitter-typeahead").css("position", "static");
     $(".twitter-typeahead").css("display", "block");
-
 
 
 
