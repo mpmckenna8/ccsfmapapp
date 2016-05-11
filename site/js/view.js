@@ -2,17 +2,6 @@
 
 var view = {
 
-
-  gotofeat: function( lat, lon){
-
-    console.log('should go to feat ' + lat + ", " + lon);
-    console.log($('.Fort')[1])
-    map.fireEvent('click', {
-      latlng: [lat, lon]
-    })
-
-  },
-
   setUpTop: function(){
     var workspace; // this variable is going to hold the router.
     $(window).resize(function() {
@@ -92,10 +81,8 @@ var view = {
         }
       });
 
-
-
-
   },
+
 
 
 
@@ -106,103 +93,72 @@ var view = {
     $.get(loc, function(data){
 //      console.log(typeof(data))
 
-    var buildgeo = data;
-
-    // for some reason when not running locally jquery automatically converts to json
-    // so this if fixes is
-    if(typeof(buildgeo) === 'string'){
-      buildgeo = JSON.parse(data);
-    }
-
-    var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
-
-//    console.log('oncampus', oncampus)
-    var buildlist = "<ul>";
-
-  // So I guess the way to set a class name on a feature is done as below in the style part of the options.
+        var buildgeo = data;
+        var datStr = campus.split(' ')[0];
 
 
+        // for some reason when not running locally jquery automatically converts to json
+        // so this if fixes is
+        if(typeof(buildgeo) === 'string'){
+          buildgeo = JSON.parse(data);
+        }
 
-        /* {
-        onEachFeature:function(feature, layer){
+        var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
 
-          var popcon = feature.properties.name
+    //    console.log('oncampus', oncampus)
+        var buildlist = "<ul>";
 
-          var htpop = "<h3>" + popcon + "<h3>" + "<p>" + ( feature.properties.description || "need to add notes field in each building") + "</p> <h5>Campus</h5> <p>" + campus + "</p>";
+        for(i in buildgeo.features){
 
-          buildlist = buildlist + "<a href='./#building/" +  L.stamp(layer) + "'><li id='" + L.stamp(layer) + "' onclick='buildclick(this)' >" + feature.properties.name + "</li>";
+          var feature = buildgeo.features[i];
 
+            buildlist = buildlist + "<a href='./#building/" +  datStr + "'><li id='" +campus+ i + "' onclick='buildclick(this)' >" + feature.properties.name + "</li> </a>";
 
-          layer.bindPopup(htpop)
+        }
+        buildlist += "</ul>";
 
-        },
-        style:function(feat){
-        //  console.log(campus)
-          return {
-            color:"#FFD700",
-            className:"buildo " + campus.split(' ')[0],
-
-          }
-        },
-
-      })
-
-      */
+        oncampus.append(buildlist);
+        console.log('source id' + datStr+ '   blah');
+        var count = 0;
 
 
-  //    console.log(oncampus);
-
-      buildlist += "</ul>";
-
-      oncampus.append(buildlist);
-      var datStr = campus.split(' ')[0];
-      console.log('source id' + datStr+ 'ble');
-      var count = 0;
-
-
+        console.log(buildlist)
 
 
         map.addSource(datStr, {
-                'type':'geojson',
-                'data':buildgeo
-          });
+                  'type':'geojson',
+                  'data':buildgeo
+              });
 
-        console.log('buildings trying to add ')
+        layersHelp.buildingSrcs.push(datStr)
+
+
+            console.log('buildings trying to add ')
 
         map.addLayer({
-            'id': datStr,
-            'type': 'fill',
-            'source': datStr,
-            'paint': {
-            "fill-outline-color": "white",
-            //  "line-width": 1,
-            'fill-color': '#FF0000',
-            },
-            'layout':{
-            },
-            'interactive':true
+                'id': datStr,
+                'type': 'fill',
+                'source': datStr,
+                'paint': {
+                "fill-outline-color": "pink",
+                //  "line-width": 1,
+                'fill-color': '#FF0000',
+                },
+                'layout':{
 
-          })
+                },
+                'interactive':true
+
+              })
 
 
-  //  campuses.append('bleep')
-    //  map.addSource(campus, blay)
+      //  campuses.append('bleep')
+        //  map.addSource(campus, blay)
 
     })
   },
   setUpBaseMapController: function(){
-    console.log('need to set up switching basemaps')
-    /*
-    var controller = L.control.layers({
-        "CCSF Red":L.mapbox.tileLayer('mpmckenna8.e19b256b').addTo(map),
-        "Mapbox Satellite": L.mapbox.tileLayer('mapbox.satellite'),
-        "Mapbox Streets":L.mapbox.tileLayer('mapbox.streets'),
-        'Mapbox Light': L.mapbox.tileLayer('mapbox.light')
-    }, {
-
-    }).addTo(map);
-
-    */
+    console.log('need to set up switching basemaps');
 
   },
   addToSide: function(feat){
@@ -270,7 +226,7 @@ var view = {
 
           },
           'paint':{
-            'text-color': 'pink',
+            'text-color': 'white',
 
           },
           'interactive':false,
@@ -297,7 +253,7 @@ var view = {
     //      map.setView(geco, 16)
         console.log('should fly to ', geco)
           map.flyTo({center:campGeojson.features[i].geometry.coordinates,
-            zoom: 26}
+            zoom: 16}
           )
 
         }
@@ -360,10 +316,37 @@ var view = {
     $(".twitter-typeahead").css("display", "block");
 
 
-
 },
 
 }
+
+
+
+
+
+var clicking = {
+  startMapClicks: function(){
+    map.on('click', function(e){
+      var features = map.queryRenderedFeatures(e.point, { layers: layersHelp.buildingSrcs});
+
+      console.log(features);
+      if(!features.length){
+        return;
+      }
+
+      var feature = features[0];
+
+      var popup = new mapboxgl.Popup()
+          .setLngLat(map.unproject(e.point))
+          .setHTML(feature.properties.name)
+          .addTo(map);
+
+    })
+  }
+}
+
+
+
 /// Bad global things I was too lazy to deal with
 function buildclick(d){
   console.log("clikced a building", d)
