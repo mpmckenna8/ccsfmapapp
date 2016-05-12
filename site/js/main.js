@@ -24,8 +24,6 @@ window.onload = (function(){
 
 
 
-
-
   map.on('load', function(){
 
 

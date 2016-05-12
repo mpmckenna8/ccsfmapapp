@@ -112,7 +112,7 @@ var view = {
 
           var feature = buildgeo.features[i];
 
-            buildlist = buildlist + "<a href='./#building/" +  datStr + "'><li id='" +campus+ i + "' onclick='buildclick(this)' >" + feature.properties.name + "</li> </a>";
+            buildlist = buildlist + "<a href='./#building/" +  datStr + "'><li class='" +campus + "' onclick='buildclick(this)' >" + feature.properties.name + "</li> </a>";
 
         }
         buildlist += "</ul>";
@@ -122,7 +122,8 @@ var view = {
         var count = 0;
 
 
-        console.log(buildlist)
+      //  console.log(buildlist)
+        console.log(datStr);
 
 
         map.addSource(datStr, {
@@ -342,6 +343,12 @@ var clicking = {
           .addTo(map);
 
     })
+
+
+    map.on('mousemove', function (e) {
+      var features = map.queryRenderedFeatures(e.point, { layers: layersHelp.buildingSrcs });
+      map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+    });
   }
 }
 
@@ -349,16 +356,58 @@ var clicking = {
 
 /// Bad global things I was too lazy to deal with
 function buildclick(d){
-  console.log("clikced a building", d)
-  var layId = d.id;
 
-  var onlay = map._layers[layId]
+  console.log("clicked a building", d.attributes.class.value)
+  var layer = d.attributes.class.value.split(' ')[0];
+
+  var buildname = d.textContent;
+  console.log(buildname);
+
+  console.log(layer)
+  console.log(layersHelp.buildingSrcs)
+
+  var features = map.queryRenderedFeatures( { layers: [layer]});
+
+    console.log(features)
+    if(!features.length){
+      console.error('something went wrong with the finding the building in the map features')
+      return;
+    }
 
 
-  console.log(onlay)
-  onlay.openPopup()
+    for(i in features){
+      if(buildname === features[i].properties.name){
+        console.log('got a match')
+        console.log(features[i])
+        openBuildingPopup(features[i])
+
+      }
+    }
+
+//  console.log(onlay)
+//  onlay.openPopup()
+}
+
+
+
+function openBuildingPopup(feature){
+
+  console.log('open popup on', feature)
+
+  var centroid = turf.centroid(feature.geometry);
+
+  console.log(centroid);
+
+  var popup = new mapboxgl.Popup()
+      .setLngLat((centroid.geometry.coordinates))
+      .setHTML(feature.properties.name)
+      .addTo(map);
+
 
 }
+
+
+
 
 function sizeLayerControl() {
   $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
