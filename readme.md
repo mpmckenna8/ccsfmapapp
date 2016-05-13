@@ -77,3 +77,10 @@ Try and figure out site vs center
 
 CCSF Facilities planning info session
   - Ask highly paid consultants for information
+
+
+
+
+Examples for dropdown menu list items to not data in this project
+<li><a href="data/parksInfo.geojson" download="parksInfo.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;ocean</a></li>
+<li><a href="data/camps.geojson" download="camps.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Campsites</a></li>

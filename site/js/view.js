@@ -90,6 +90,9 @@ var view = {
   addBuilds: function(campus, loc){
 
 
+    view.addDownload(campus + ' buildings', loc)
+
+
     $.get(loc, function(data){
 //      console.log(typeof(data))
 
@@ -105,7 +108,9 @@ var view = {
 
         var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
 
-    //    console.log('oncampus', oncampus)
+// just better quilfy all the campus names and send those to add to downloads
+
+
         var buildlist = "<ul>";
 
         for(i in buildgeo.features){
@@ -115,16 +120,14 @@ var view = {
             buildlist = buildlist + "<a href='./#building/" +  datStr + "'><li class='" +campus + "' onclick='buildclick(this)' >" + feature.properties.name + "</li> </a>";
 
         }
+
         buildlist += "</ul>";
 
         oncampus.append(buildlist);
-        console.log('source id' + datStr+ '   blah');
+
         var count = 0;
 
-
       //  console.log(buildlist)
-        console.log(datStr);
-
 
         map.addSource(datStr, {
                   'type':'geojson',
@@ -133,8 +136,6 @@ var view = {
 
         layersHelp.buildingSrcs.push(datStr)
 
-
-            console.log('buildings trying to add ')
 
         map.addLayer({
                 'id': datStr,
@@ -153,10 +154,9 @@ var view = {
               })
 
 
-      //  campuses.append('bleep')
-        //  map.addSource(campus, blay)
-
     })
+
+
   },
   setUpBaseMapController: function(){
     console.log('need to set up switching basemaps');
@@ -318,6 +318,22 @@ var view = {
 
 
 },
+
+  addDownload: function(campusName, srcStr){
+      // set up and add download for  each
+      console.log(srcStr.split('/').length);
+
+      var downloadStr = srcStr.split('/')[srcStr.split('/').length-1]
+
+      console.log(downloadStr);
+
+      var liItem = '<li><a href="' + srcStr + '" download="' + downloadStr + '" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;' + campusName + '</a></li>';
+
+      console.log($('#downloadDrop')[0].nextSibling.nextSibling)
+
+      $($('#downloadDrop')[0].nextSibling.nextSibling).append(liItem)
+
+  }
 
 }
 
