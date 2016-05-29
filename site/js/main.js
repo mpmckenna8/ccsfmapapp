@@ -59,3 +59,10 @@ window.onload = (function(){
 
 
 })
+
+
+$('#findLocRadio').on('click', function(e){
+  console.log(e)
+  console.log(this);
+  console.log('implement letting the user center/zoom to their current location')
+})

@@ -11,6 +11,8 @@ var searches = {
 
 
   },
+
+
   addToSearch(layer){
 
     for( i in layer.features){
@@ -33,7 +35,7 @@ var searches = {
     }
 
 
-    var campsBH = new Bloodhound({
+    searches.campsBH = new Bloodhound({
     name:"CampSearch",
     datumTokenizer: function (d){
       //console.log('tockan')
@@ -42,10 +44,10 @@ var searches = {
     },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     local: this.campusSearch,
-    limit:10
+    limit:5
   })
 
-  var geonamesBH = new Bloodhound({
+  searches.geonamesBH = new Bloodhound({
   name: "GeoNames",
   datumTokenizer: function (d) {
   //  console.log(d)
@@ -75,31 +77,96 @@ var searches = {
       }
     }
   },
-  limit: 10
+  limit: 5
 });
 
 
 
-    campsBH.initialize();
 
-
-    geonamesBH.initialize();
-
-    view.setupSearch(campsBH, geonamesBH);
 
 
   },
 
+  addBuildSearch: function (geojson, campus){
+
+    var keyStr = campus+"buildings";
+
+    if( !searches.buildings) {
+        searches.buildings = [];
+    };
+
+    for(i in geojson){
+      var feature = geojson[i];
+      console.log('Got to add this feature');
+      console.log(feature);
+      var centroid = getPolyCentroid(feature);
+      searches.buildings.push({
+        name: feature.properties.name || 'none',
+        source:"Buildings",
+        id: keyStr + i,
+        lat: centroid[1],
+        lng: centroid[0]
+
+      })
+
+    }
+
+    console.log('putGeojson into search array', geojson)
+
+
+
+  this.buildCount++;
+  var buildingsBH ;
+  if( this.buildCount >= 11){
+
+      console.log('last buildings')
+
+       buildingsBH = new Bloodhound({
+        name: "buildingSearch",
+        datumTokenizer: function (d){
+          //console.log('tockan')
+          console.log("building search makeing", d);
+          return Bloodhound.tokenizers.whitespace(d.name)
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: searches['buildings'],
+        limit:10
+      })
+
+      this.campsBH.initialize();
+
+
+      this.geonamesBH.initialize();
+
+      buildingsBH.initialize();
+
+      view.setupSearch(searches.campsBH, searches.geonamesBH, buildingsBH);
+
+
+  }
+
+
+},
+buildCount: 0,
 
 
 }
+
 
 
 var layersHelp = {
 
   buildingSrcs: [],
-  
-
 
 
 }
+
+
+
+function getPolyCentroid (feat){
+
+  var centroid = turf.centroid(feat.geometry);
+
+  return centroid.geometry.coordinates;
+
+};

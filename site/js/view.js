@@ -47,7 +47,8 @@ var view = {
 
     $("#list-btn").click(function() {
       $('#sidebar').toggle();
-      map.invalidateSize();
+      //map.invalidateSize();
+      console.log('need to fix the map so it goes to 100% width or back to sharing width')
       return false;
     });
 
@@ -86,12 +87,9 @@ var view = {
 
 
 
-
   addBuilds: function(campus, loc){
 
-
     view.addDownload(campus + ' buildings', loc)
-
 
     $.get(loc, function(data){
 //      console.log(typeof(data))
@@ -99,17 +97,19 @@ var view = {
         var buildgeo = data;
         var datStr = campus.split(' ')[0];
 
-
         // for some reason when not running locally jquery automatically converts to json
         // so this if fixes is
         if(typeof(buildgeo) === 'string'){
           buildgeo = JSON.parse(data);
         }
 
+
+        searches.addBuildSearch(buildgeo.features, campus);
+
+
         var oncampus = $("."+ campus.split(' ')[0]) //("Civic Center")
 
 // just better quilfy all the campus names and send those to add to downloads
-
 
         var buildlist = "<ul>";
 
@@ -150,18 +150,19 @@ var view = {
 
                 },
                 'interactive':true
-
               })
-
 
     })
 
 
   },
   setUpBaseMapController: function(){
+
     console.log('need to set up switching basemaps');
 
   },
+
+
   addToSide: function(feat){
 
       var camli= document.getElementById('campList');
@@ -199,48 +200,46 @@ var view = {
       searches.addToSearch(campGeojson);
       console.log(campGeojson)
 
-// locally http://localhost:8080/shapes/campPoints.geojson
+      // locally http://localhost:8080/shapes/campPoints.geojson
 
 
 
-  //  var campPointLay = new mapboxgl.GeoJSONSource(    {data:campReq.responseText}  )
+      //  var campPointLay = new mapboxgl.GeoJSONSource(    {data:campReq.responseText}  )
 
-  map.on('style.load', function(){
+      map.on('style.load', function(){
 
 
-          map.addSource('campuses', {
+        map.addSource('campuses', {
             'type':'geojson',
             'data':campGeojson
           });
 
 
+    //      console.log('should add cmmpus labels')
+          map.addLayer({
+              'id': 'campusPois',
+              'type': 'symbol',
+              'source': 'campuses',
+              'layout':{
+                'text-field':'{campusname}',
+                'text-allow-overlap': true,
+                "text-size": 15
 
-      console.log('should add cmpus labels')
-      map.addLayer({
-          'id': 'campusPois',
-          'type': 'symbol',
-          'source': 'campuses',
-          'layout':{
-            'text-field':'{campusname}',
-            'text-allow-overlap': true,
-            "text-size": 15
+              },
+              'paint':{
+                'text-color': 'white',
 
-          },
-          'paint':{
-            'text-color': 'white',
-
-          },
-          'interactive':false,
-        })
+              },
+              'interactive':false,
+            })
 
   })
 
 
 
 
-
-
 }},
+
 
  gocamp: function (feat){
     var cakey = feat;
@@ -262,7 +261,7 @@ var view = {
 
   },
 
-  setupSearch: function(campusBH, geonamesBH){
+  setupSearch: function(campusBH, geonamesBH, buildingsBH){
 
       $("#searchbox").typeahead({
           minLength: 3,
@@ -275,7 +274,14 @@ var view = {
         templates:{
           header:"<h3 class='typeahead-header'>Campuses</h3>"
         }
-      },
+      },{
+      name:"BuildingSearch",
+      displayKey: "name",
+      source: buildingsBH.ttAdapter(),
+      templates:{
+        header:"<h3 class='typeahead-header'>Buildings</h3>"
+      }
+    },
       {
         name: "GeoNames",
         displayKey: "name",
@@ -290,50 +296,63 @@ var view = {
         console.log(obj)
         var obje = obj;
         if (datum.source === "GeoNames") {
-            map.setView([datum.lat, datum.lng], 14);
+        //  view.gocamp(dunnoca);
+
+          //  map.setView([datum.lat, datum.lng], 14);
+
           }
 
         else if (datum.source === "camps"){
-          map.setView([datum.lat, datum.lng], 17);
-          console.log(map._layers)
+        //  map.setView([datum.lat, datum.lng], 17);
+        console.log('got to camp')
 
         }
+
+
+
+        map.flyTo({ center: [ datum.lng, datum.lat ],
+                    zoom: 17})
+
+
+
 
         if ($(".navbar-collapse").height() > 50) {
           $(".navbar-collapse").collapse("hide");
+
         }
       })
-    .on("typeahead:opened", function () {
-      $(".navbar-collapse.in").css("max-height", $(document).height() - $(".navbar-header").height());
-      $(".navbar-collapse.in").css("height", $(document).height() - $(".navbar-header").height());
-    })
-    .on("typeahead:closed", function () {
-      $(".navbar-collapse.in").css("max-height", "");
-      $(".navbar-collapse.in").css("height", "");
-    });
+      .on("typeahead:opened", function () {
+        $(".navbar-collapse.in").css("max-height", $(document).height() - $(".navbar-header").height());
+        $(".navbar-collapse.in").css("height", $(document).height() - $(".navbar-header").height());
+      })
+      .on("typeahead:closed", function () {
+        $(".navbar-collapse.in").css("max-height", "");
+        $(".navbar-collapse.in").css("height", "");
+      });
 
 
-    $(".twitter-typeahead").css("position", "static");
-    $(".twitter-typeahead").css("display", "block");
+      $(".twitter-typeahead").css("position", "static");
+      $(".twitter-typeahead").css("display", "block");
 
 
 },
 
   addDownload: function(campusName, srcStr){
       // set up and add download for  each
-      console.log(srcStr.split('/').length);
+    //  console.log(srcStr.split('/').length);
 
       var downloadStr = srcStr.split('/')[srcStr.split('/').length-1]
 
-      console.log(downloadStr);
+  //    console.log(downloadStr);
 
       var liItem = '<li><a href="' + srcStr + '" download="' + downloadStr + '" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;' + campusName + '</a></li>';
 
-      console.log($('#downloadDrop')[0].nextSibling.nextSibling)
+    //  console.log($('#downloadDrop')[0].nextSibling.nextSibling)
 
       $($('#downloadDrop')[0].nextSibling.nextSibling).append(liItem)
 
-  }
+  },
+
 
 }
 
@@ -346,7 +365,7 @@ var clicking = {
     map.on('click', function(e){
       var features = map.queryRenderedFeatures(e.point, { layers: layersHelp.buildingSrcs});
 
-      console.log(features);
+  //    console.log(features);
       if(!features.length){
         return;
       }
@@ -390,7 +409,6 @@ function buildclick(d){
       return;
     }
 
-
     for(i in features){
       if(buildname === features[i].properties.name){
         console.log('got a match')
@@ -403,6 +421,7 @@ function buildclick(d){
 //  console.log(onlay)
 //  onlay.openPopup()
 }
+
 
 
 
