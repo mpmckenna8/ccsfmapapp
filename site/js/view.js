@@ -142,7 +142,7 @@ var view = {
                 'type': 'fill',
                 'source': datStr,
                 'paint': {
-                "fill-outline-color": "pink",
+                "fill-outline-color": "red",
                 //  "line-width": 1,
                 'fill-color': '#FF0000',
                 },
@@ -182,6 +182,8 @@ var view = {
         var dunnoca = d.currentTarget.attributes.data.value;
         console.log((typeof(dunnoca)));
         view.gocamp(dunnoca);
+
+
 
       })
   },
@@ -295,25 +297,26 @@ var view = {
         console.log(datum)
         console.log(obj)
         var obje = obj;
-        if (datum.source === "GeoNames") {
-        //  view.gocamp(dunnoca);
 
-          //  map.setView([datum.lat, datum.lng], 14);
-
-          }
-
-        else if (datum.source === "camps"){
-        //  map.setView([datum.lat, datum.lng], 17);
-        console.log('got to camp')
-
-        }
 
 
 
         map.flyTo({ center: [ datum.lng, datum.lat ],
                     zoom: 17})
 
+        if (datum.source === "Buildings") {
+                    //  view.gocamp(dunnoca);
 
+
+                      //  map.setView([datum.lat, datum.lng], 14);
+
+                      }
+
+                    else if (datum.source === "camps"){
+                    //  map.setView([datum.lat, datum.lng], 17);
+                    console.log('got to camp')
+
+                    }
 
 
         if ($(".navbar-collapse").height() > 50) {
@@ -361,6 +364,7 @@ var view = {
 
 
 var clicking = {
+
   startMapClicks: function(){
     map.on('click', function(e){
       var features = map.queryRenderedFeatures(e.point, { layers: layersHelp.buildingSrcs});
@@ -391,15 +395,13 @@ var clicking = {
 
 /// Bad global things I was too lazy to deal with
 function buildclick(d){
-
-  console.log("clicked a building", d.attributes.class.value)
+  console.log("clicked a building hey", d.attributes.class.value)
   var layer = d.attributes.class.value.split(' ')[0];
 
   var buildname = d.textContent;
   console.log(buildname);
 
   console.log(layer)
-  console.log(layersHelp.buildingSrcs)
 
   var features = map.queryRenderedFeatures( { layers: [layer]});
 
@@ -412,7 +414,7 @@ function buildclick(d){
     for(i in features){
       if(buildname === features[i].properties.name){
         console.log('got a match')
-        console.log(features[i])
+      //  console.log(features[i])
         openBuildingPopup(features[i])
 
       }

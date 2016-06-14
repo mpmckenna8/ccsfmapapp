@@ -70,9 +70,7 @@ Southeast Center
 
 
 Try and figure out site vs center
-
-
-
+  So for a CCSF location to describe itself as a Campus is should have certain student services like an admissions/bursars office and an adequate amount of onsite student counseling services.
 
 
 CCSF Facilities planning info session
@@ -81,6 +79,9 @@ CCSF Facilities planning info session
 
 
 
+
+
 Examples for dropdown menu list items to not data in this project
-<li><a href="data/parksInfo.geojson" download="parksInfo.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;ocean</a></li>
-<li><a href="data/camps.geojson" download="camps.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Campsites</a></li>
+
+      <li><a href="data/parksInfo.geojson" download="parksInfo.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;ocean</a></li>
+      <li><a href="data/camps.geojson" download="camps.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Campsites</a></li>

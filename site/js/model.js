@@ -97,8 +97,6 @@ var searches = {
 
     for(i in geojson){
       var feature = geojson[i];
-      console.log('Got to add this feature');
-      console.log(feature);
       var centroid = getPolyCentroid(feature);
       searches.buildings.push({
         name: feature.properties.name || 'none',
@@ -111,7 +109,7 @@ var searches = {
 
     }
 
-    console.log('putGeojson into search array', geojson)
+  //  console.log('putGeojson into search array', geojson)
 
 
 
@@ -125,7 +123,6 @@ var searches = {
         name: "buildingSearch",
         datumTokenizer: function (d){
           //console.log('tockan')
-          console.log("building search makeing", d);
           return Bloodhound.tokenizers.whitespace(d.name)
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
